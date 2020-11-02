@@ -1,0 +1,24 @@
+<aura:component >
+    <!-- Handlers and Events -->
+    <aura:handler event="c:ViewStateList" action="{!c.handlePokemonView}"/>
+    <aura:registerEvent name="PokemonSearchEvent" type="c:Pokemon_SearchEvent"/>
+
+    <!-- Attributes -->
+    <aura:attribute name="pokeName" type="String"/>
+    <aura:attribute name="specyName" type="String"/>
+    <aura:attribute name="pokeView" type="Boolean" default="false"/>
+    
+    <!-- Container for input fields and buttons -->
+    <aura:if isTrue="{!v.pokeView}">
+        <div style="margin-top: 10px; margin-bottom: 10px; margin-right: 5px;">
+            <lightning:card>
+                <div style="margin-left: 50px; height: 593px;">
+                    <lightning:input type="String" label="Pokemon" value="{!v.pokeName}" class="slds-size_2-of-5"/>
+                    <lightning:input type="String" label="Specy" value="{!v.specyName}" class="slds-size_2-of-5"/>
+                    <br/>
+                    <lightning:button label="Search Name" title="Search Name" onclick="{!c.search}" class="slds-button slds-button_neutral"/>
+                </div>
+            </lightning:card>
+        </div>
+    </aura:if>
+</aura:component>

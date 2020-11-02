@@ -1,0 +1,82 @@
+<aura:component controller="PokemonGoCallout">
+	<!-- Handlers and Event -->
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:handler event="c:Pokemon_SearchEvent" action="{!c.HandleSearchEvent}"/>
+    <aura:handler event="c:ViewStateList" action="{!c.handleAccountView}"/>
+    <aura:handler name="change" value="{!v.isLoading}" action="{!c.findFav}"/>
+    <aura:registerEvent name="SetViewDetail" type="c:ViewStateDetail"/>
+    <!-- Attributes -->
+    <aura:attribute name="pokemons" type="Pokemon__c[]"/>
+    <aura:attribute name="isFav" type="Boolean[]"/>
+    <aura:attribute name="page" type="Integer" default="1"/>
+    <aura:attribute name="TotalPage" type="Integer" default="10"/>
+    <aura:attribute name="limiter" type="Integer" default="10"/>
+    <aura:attribute name="isNext" type="Boolean" default="true"/>
+    <aura:attribute name="isPrevious" type="Boolean" default="false"/>
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="isSearch" type="Boolean" default="false"/>
+    <aura:attribute name="pokeView" type="Boolean" default="false"/>
+    
+    <!-- Mini List for Favorites -->
+    <aura:if isTrue="{!v.pokeView}">
+        <div style="margin-top: 10px; margin-bottom: 10px; margin-left: 5px;">
+            <lightning:card>
+                <h1 class="slds-text-heading_label" style="margin-left: 50px">Pokemons</h1>
+                <div>
+                    <aura:if isTrue="{!v.isLoading}">
+                        <div class="slds-list_horizontal slds-has-dividers_right slds-text-heading_medium" style="margin-left: 10px">
+                            <p style="width: 100px; text-align:center;" class="slds-border_top slds-border_right slds-border_left slds-border_bottom">Fav</p>
+                            <p style="width: 100px; text-align:center;" class="slds-border_top slds-border_right slds-border_left slds-border_bottom">View</p>
+                            <p style="width: 100px; text-align:center;" class="slds-border_top slds-border_right slds-border_left slds-border_bottom">Sprite</p>
+                            <p style="width: 200px; text-align:center;" class="slds-border_top slds-border_right slds-border_left slds-border_bottom">Name</p>
+                            <p style="width: 270px; text-align:center;" class="slds-border_top slds-border_right slds-border_left slds-border_bottom">Specy</p>
+                        </div>
+                        <div class="slds-scrollable" style="height: 500px">
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-10">
+                                    <table style="margin-left: 50px; width: 60px;">
+                                        <aura:iteration items="{!v.isFav}" var="i">
+                                            <tr><th><div style="margin-top: 40px; height: 60px; width: 60px;"><ui:outputCheckbox value="{!i}"/></div></th></tr>
+                                        </aura:iteration>
+                                    </table>
+                                </div>
+                                <div class="slds-col slds-size_9-of-10">
+                                    <table>
+                                        <aura:iteration items="{!v.pokemons}" var="poke" indexVar="index">
+                                            <tr>
+                                                <th style="width: 100px"><div style="margin-left: 16px"><lightning:button label="View" value="{!index}" onclick="{!c.fireViewEvent}"/></div></th>
+                                                <th style="width: 100px"><div><img src="{!poke.SpriteURL__c}" width="100" height="100"/></div></th>
+                                                <th style="width: 200px"><div style="margin-left: 20px">{!poke.Name}</div></th>
+                                                <th style="width: 270px"><div style="margin-left: 20px">{!poke.Species__c}</div></th>
+                                            </tr>
+                                        </aura:iteration>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <aura:if isTrue="{!!v.isSearch}">
+                            <div class="slds-list_horizontal slds-has-dividers_right" style="margin-left: 50px">
+                                <aura:if isTrue="{!v.isPrevious}">
+                                    <lightning:button label="Previous" title="Previous" onclick="{!c.togglePrevious}" class="slds-button slds-button_neutral slds-size_1-of-5"/>
+                                </aura:if>
+                                <aura:if isTrue="{!v.isNext}">
+                                    <lightning:button label="Next" title="Next" onclick="{!c.toggleNext}" class="slds-button slds-button_neutral slds-size_1-of-5"/>
+                                </aura:if>
+                            </div>
+                        </aura:if>
+                    </aura:if>
+                    <aura:if isTrue="{!!v.isLoading}">
+                        <lightning:card>
+                            <div style="height: 553px">
+                                <div style="position: absolute; left: 400px; top: 250px;">
+                                    <lightning:spinner alternativeText="Loading" size="large"/>
+                                </div>
+                            </div>
+                        </lightning:card>
+                    </aura:if>
+                </div>
+            </lightning:card>
+        </div>
+    </aura:if>
+</aura:component>

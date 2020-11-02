@@ -1,0 +1,27 @@
+<aura:component >
+    <aura:handler event="c:ViewStateList" action="{!c.handleView}"/>
+    <aura:attribute name="caseView" type="Boolean" default="false"/>
+    <aura:attribute name="fields" type="String[]" default="['Reason','Type','Subject','Description']"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="showMessage" type="Boolean" default="false"/>
+    <aura:attribute name="message" type="String"/>
+    
+    <aura:if isTrue="{!v.caseView}">
+        <div style="margin-top: 10px; margin-bottom: 10px;">
+            <lightning:card>
+                <div style="height: 593px">
+                    <aura:if isTrue="{!!v.showMessage}">
+                        <p class="displayHeader">Pokemon Interaction Module Issues</p>
+                        <br/>
+                        <lightning:recordForm aura:id="caseForm" objectApiName="Case" fields="{!v.fields}" recordTypeId="0124W000000OV1hQAG" onsubmit="{!c.handleSuccess}"/>
+                    </aura:if>
+                    <aura:if isTrue="{!v.showMessage}">
+                        <div>
+                            <span class="slds-align_absolute-center displayMessage" >{!v.message}</span>
+                        </div>
+                    </aura:if>
+                </div>
+            </lightning:card>
+        </div>
+    </aura:if>
+</aura:component>

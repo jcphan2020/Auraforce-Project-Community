@@ -1,0 +1,32 @@
+<aura:component controller="PokemonGoCallout">
+	<!-- Handlers -->
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:handler event="c:ViewStateList" action="{!c.handleAccountView}"/>
+    <aura:registerEvent name="viewFavorite" type="c:ViewStateDetail"/>
+    
+    <!-- Attributes -->
+    <aura:attribute name="favorites" type="Pokemon__c"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="accView" type="Boolean" default="true"/>
+    <!-- Mini List for Favorites -->
+    <aura:if isTrue="{!v.accView}">
+        <div  style="margin-top: 10px; margin-bottom: 10px; margin-left: 5px;">
+            <lightning:card>
+                <div style="height: 593px;">
+                    <h1 class="slds-text-heading_label">Favorite Pokemons</h1>
+                    <table>
+                        <div class="slds-scrollable" style="height: 550px">
+                        <tr><th><div style="width:90px"></div></th><th>Name</th></tr>
+                        <aura:iteration items="{!v.favorites}" var="item">
+                            <tr>
+                                <th><div style="margin-left: 25px; width: 90px"><lightning:button label="View" value="{!item}" onclick="{!c.fireViewEvent}"/></div></th>
+                                <th>{!item.Name}</th>
+                            </tr>
+                        </aura:iteration>
+                        </div>
+                    </table>
+                </div>
+            </lightning:card>
+        </div>
+    </aura:if>
+</aura:component>

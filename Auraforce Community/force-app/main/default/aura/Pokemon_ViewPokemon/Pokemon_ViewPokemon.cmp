@@ -1,0 +1,133 @@
+<aura:component controller="PokemonGoCallout">
+    <!-- Handlers and Events -->
+    <aura:handler event="c:ViewStateDetail" action="{!c.setDetailView}"/>
+    <aura:handler event="c:ViewStateList" action="{!c.handleDetailView}"/>
+    <!-- attributes -->
+    <aura:attribute name="pokemon" type="Pokemon__c" default="{'sobjectType' : 'Pokemon__c', 'Base_Experience__c' : 0, 'Height__c' : 0, 'Name' : 'Empty', 'Species__c' : 'Empty', 'spriteURL' : 'Empty', 'Weight__c' : 0}"/>
+    <aura:attribute name="abilities" type="List"/>
+    <aura:attribute name="abilityDetail" type="String"/>
+    <aura:attribute name="moves" type="List"/>
+    <aura:attribute name="moveDetail" type="List"/>
+    <aura:attribute name="isFavorite" type="Boolean" default="false"/>
+    <aura:attribute name="detailView" type="Boolean" default="false"/>
+    <aura:attribute name="MoveOrAbility" type="Boolean" default="true"/>
+    <aura:attribute name="isLoading" type="Boolean" default="true"/>
+    
+    <aura:if isTrue="{!v.detailView}">
+        <aura:if isTrue="{!!v.isLoading}">
+            <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-4" style="margin-top: 10px; margin-bottom: 10px;">
+                    <lightning:card>
+                        <div style="margin-left: 50px; height: 593px;">
+                            <h2 class="slds-text-heading_large">{!v.pokemon.Name}</h2>
+                            <p><img src="{!v.pokemon.SpriteURL__c}" width="200" height="200"/></p>
+                            <p class="slds-text-heading_small"><h1 class="slds-text-heading_label">Specy:</h1>{!v.pokemon.Species__c}</p><br/>
+                            <p class="slds-text-heading_small"><h1 class="slds-text-heading_label">Base Experience:</h1>{!v.pokemon.Base_Experience__c}</p><br/>
+                            <p class="slds-text-heading_small"><h1 class="slds-text-heading_label">Height:</h1>{!v.pokemon.Height__c}</p><br/>
+                            <div class="slds-float_left">
+                                <p class="slds-text-heading_small"><h1 class="slds-text-heading_label">Wight:</h1>{!v.pokemon.Weight__c}</p>
+                            </div>
+							<div class="slds-float_right"><p style="margin-right: 10px; margin-bottom: 10px;"><lightning:button aura:id="Fav" label="Favorite" value="{!v.pokemon}" onclick="{!c.setFavorite}"/></p></div>
+                            <br/>
+                        </div>
+                    </lightning:card>
+                </div>
+                <div class="slds-col slds-size_1-of-4" style="margin-top: 10px; margin-bottom: 10px;">
+                    <lightning:card>
+                        <div style="height: 593px">
+                            <h1 class="slds-text-heading_label">Abilities</h1>
+                            <table class="slds-grid slds-wrap" style="margin-left: 10px">
+                                <div class="slds-scrollable" style="height: 200px">
+                                    <aura:iteration items="{!v.abilities}" var="item">
+                                        <tr>
+                                            <th style="width: 60px"><lightning:button label="View" value="{!item}" onclick="{!c.findAbilityDetail}"/></th>
+                                            <th style="width: 200px"><p class="slds-text-heading_small" style="margin-left: 10px">{!item}</p></th>
+                                        </tr>
+                                    </aura:iteration>
+                                </div>
+                            </table>
+                            <br/>
+                            <h1 class="slds-text-heading_label">Moves</h1>
+                            <table class="slds-grid slds-wrap" style="margin-left: 10px">
+                                <div class="slds-scrollable" style="height: 200px">
+                                    <aura:iteration items="{!v.moves}" var="item">
+                                        <tr>
+                                            <th style="width: 60px"><lightning:button label="View" value="{!item}" onclick="{!c.findMoveDetail}"/></th>
+                                            <th style="width: 200px"><p class="slds-text-heading_small" style="margin-left: 10px">{!item}</p></th>
+                                        </tr>
+                                    </aura:iteration>
+                                </div>
+                            </table>
+                        </div>
+                    </lightning:card>
+                </div>
+                <div class="slds-col slds-size_1-of-2" style="margin-top: 10px; margin-bottom: 10px;">
+                    <lightning:card>
+                        <div style="height: 593px">
+                            <h1 class="slds-text-heading_label">Details</h1>
+                            <table class="slds-grid slds-wrap" style="margin-left: 10px">
+                                <div class="slds-scrollable" style="height: 435px">
+                                    <aura:if isTrue="{!!v.MoveOrAbility}">
+                                        <tr>
+                                            <th style="width: 100px">Information</th>
+                                            <th style="width: 480px">{!v.abilityDetail}</th>
+                                        </tr>
+                                    </aura:if>
+                                    <aura:if isTrue="{!v.MoveOrAbility}">
+                                        <tr>
+                                            <th style="width: 100px">Accuracy</th>
+                                            <th style="width: 480px">{!v.moveDetail[0]}</th>
+                                        </tr>
+                                        <tr>
+                                            <th style="width: 100px">Damage Class</th>
+                                            <th style="width: 480px">{!v.moveDetail[1]}</th>
+                                        </tr>
+                                        <tr>
+                                            <th style="width: 100px">Effect Change</th>
+                                            <th style="width: 480px">{!v.moveDetail[2]}</th>
+                                        </tr>
+                                        <tr>
+                                            <th style="width: 100px">Ailment</th>
+                                            <th style="width: 480px">{!v.moveDetail[4]}</th>
+                                        </tr>
+                                        <tr>
+                                            <th style="width: 100px">Category</th>
+                                            <th style="width: 480px">{!v.moveDetail[5]}</th>
+                                        </tr>
+                                        <tr>
+                                            <th style="width: 100px">Power</th>
+                                            <th style="width: 480px">{!v.moveDetail[6]}</th>
+                                        </tr>
+                                        <tr>
+                                            <th style="width: 100px">PP</th>
+                                            <th style="width: 480px">{!v.moveDetail[7]}</th>
+                                        </tr>
+                                        <tr>
+                                            <th style="width: 100px">Target</th>
+                                            <th style="width: 480px">{!v.moveDetail[8]}</th>
+                                        </tr>
+                                        <tr>
+                                            <th style="width: 100px">Information</th>
+                                            <th style="width: 480px">{!v.moveDetail[3]}</th>
+                                        </tr>
+                                    </aura:if>
+                                </div>
+                            </table>
+                        </div>
+                    </lightning:card>
+                </div>
+            </div>
+        </aura:if>
+        <aura:if isTrue="{!v.isLoading}">
+            <div style="margin-top: 10px; margin-bottom: 10px;">
+                <lightning:card>
+                    <div style="height: 593px">
+                        <div style="position: absolute; left: 600px; top: 250px;">
+                            <lightning:spinner alternativeText="Loading" size="large"/>
+                        </div>
+                    </div>
+                </lightning:card>
+            </div>
+        </aura:if>
+    </aura:if>
+</aura:component>

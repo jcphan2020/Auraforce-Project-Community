@@ -1,0 +1,72 @@
+<!-- Johnson Phan
+	Main Page Information.
+-->
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="PokemonGoCallout">
+    <aura:registerEvent name="setListView" type="c:ViewStateList"/>
+    <!-- Keep a fixed width -->
+    <div style="width: auto; height: auto; background-color: #808080;">
+        <div style="width: 1200px;margin: auto;">
+            <div style="height: 250px">
+                <img src="{!$Resource.background_poke_1}"/>
+            </div>
+            <!-- Header Information -->
+            <lightning:layoutItem>
+                <div class="slds-text-title_caps">Pokemon Interaction Module</div>
+            </lightning:layoutItem>
+            <lightning:card>
+                <lightning:layout>
+                    <lightning:icon iconName="standard:account" alternativeText="Account" title="Account"/>
+                    <div class="slds-media__body">
+                     <p class="slds-text-title_caps slds-line-height_reset">Pokemons</p>
+                     <h1 class="slds-page-header__title slds-m-right_small slds-align-middle slds-truncate" title="My Accounts">All Pokemons</h1>
+                     </div>
+                </lightning:layout>
+                
+                <!-- Switch to other displays -->
+                <lightning:layout class="slds-list_horizontal slds-has-dividers_right">
+                    <button class="slds-button slds-button_neutral slds-size_1-of-5" style="margin-left: 20px; margin-top: 20px;" onclick="{!c.handleAccountView}">Home</button>
+                    <button class="slds-button slds-button_neutral slds-size_1-of-5" style="margin-left: 20px; margin-top: 20px;" onclick="{!c.handlePokemonView}">Pokemon List</button>
+                </lightning:layout>
+            </lightning:card>
+            
+            <!-- Main Page Account -->
+            <div class="slds-grid">
+                <!-- ACCOUNT DETAIL -->
+                <div class="slds-col slds-size_2-of-3">
+                    <c:Pokemon_AccountRecordForm/>
+                </div>
+                <!-- Mini Package List -->
+                <div class="slds-col slds-size_1-of-3">
+                    <c:Pokemon_AccountFavoriteList/>
+                </div>
+            </div>
+            
+            <!-- Main Page Pokemon List -->
+            <div class="slds-grid">
+                <!-- Search -->
+                <div class="slds-col slds-size_1-of-3">
+                    <c:Pokemon_SearchForm/>
+                </div>
+                <!-- List -->
+                <div class="slds-col slds-size_2-of-3">
+                    <c:Pokemon_MainPokeList/>
+                </div>
+            </div>
+            
+            <!-- Main Page Pokemon Detail -->
+            <div>
+                <c:Pokemon_ViewPokemon/>
+                <c:Pokemon_CaseForm/>
+            </div>
+            <!-- Footer -->
+            <lightning:card>
+                <lightning:layout class="slds-list_horizontal slds-has-dividers_right">
+                    <button class="slds-button slds-button_neutral slds-size_1-of-5" style="margin: 20px" onclick="{!c.handleCaseView}">Issue</button>
+                </lightning:layout>
+            </lightning:card>
+            <div>
+                <img src="{!$Resource.background_poke_2}"/>
+            </div>
+        </div>
+    </div>
+</aura:component>

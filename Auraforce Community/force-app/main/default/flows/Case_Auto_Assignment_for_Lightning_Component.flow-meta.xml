@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_Email_to_User</name>
+        <label>Send Email to User</label>
+        <locationX>50</locationX>
+        <locationY>373</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Set_Case_Assignment_Rule_Manually</targetReference>
+        </connector>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <stringValue>Thank your for using our service! We assign someone to look into this matter as High Priority!</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>$Record.CreatedBy.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <stringValue>phanjohn288@aol.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <elementReference>$User.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>Received Issue</stringValue>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Email_to_User_Low</name>
+        <label>Send Email to User Low</label>
+        <locationX>578</locationX>
+        <locationY>373</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Set_Case_Assignment_Rule_Manually</targetReference>
+        </connector>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <stringValue>Thank your for using our service! We assign someone to look into this matter as Low Priority!</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>$Record.CreatedBy.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <stringValue>phanjohn288@aol.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <elementReference>$User.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>Received Issue</stringValue>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Email_to_User_Medium</name>
+        <label>Send Email to User Medium</label>
+        <locationX>314</locationX>
+        <locationY>373</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Set_Case_Assignment_Rule_Manually</targetReference>
+        </connector>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <stringValue>Thank your for using our service! We assign someone to look into this matter as Medium Priority!</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>$Record.CreatedBy.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <stringValue>phanjohn288@aol.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <elementReference>$User.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>Received Issue</stringValue>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>50.0</apiVersion>
+    <assignments>
+        <name>Set_Case_Assignment_Rule_Manually</name>
+        <label>Set Case Assignment Rule Manually</label>
+        <locationX>314</locationX>
+        <locationY>589</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.OwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>0054W00000AZ2DwQAL</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Owner</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Reason_Based_Message</name>
+        <label>Reason Based Message</label>
+        <locationX>314</locationX>
+        <locationY>253</locationY>
+        <defaultConnector>
+            <targetReference>Send_Email_to_User_Low</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>High_Priority</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Reason</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Lack of Function</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Reason</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Bug Found</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Email_to_User</targetReference>
+            </connector>
+            <label>High Priority</label>
+        </rules>
+        <rules>
+            <name>Medium_Priority</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Reason</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Missing Pokemon</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Reason</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Missing Ability</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Reason</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Missing Move</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Email_to_User_Medium</targetReference>
+            </connector>
+            <label>Medium Priority</label>
+        </rules>
+    </decisions>
+    <interviewLabel>Case Auto Assignment for Lightning Component {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Case Auto Assignment for Lightning Component</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_Owner</name>
+        <label>Update Owner</label>
+        <locationX>314</locationX>
+        <locationY>709</locationY>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Reason_Based_Message</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>0124W000000OV1hQAG</stringValue>
+            </value>
+        </filters>
+        <object>Case</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+</Flow>
